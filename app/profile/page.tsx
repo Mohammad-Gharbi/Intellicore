@@ -2,7 +2,7 @@
 
 import { useSession } from "next-auth/react"
 
-export default async function Profile() {
+export default function Profile() {
   const { data: session, status } = useSession()
   const user = session?.user
 
@@ -18,17 +18,8 @@ export default async function Profile() {
               <p>Loading...</p>
             ) : (
               <div className="flex items-center gap-8">
-                <div>
-                  {/* <img
-                    src={user.image ? user.image : "/images/default.png"}
-                    className="max-h-36"
-                    alt={`profile photo of ${user.name}`}
-                  />
-                </div> */}
-                <div className="mt-8">
-                  <p className="mb-3">Name: {user.name}</p>
-                  <p className="mb-3">Email: {user.email}</p>
-                </div>
+                <p className="mb-3">Name: {user.name}</p>
+                <p className="mb-3">Email: {user.email}</p>
               </div>
             )}
           </div>

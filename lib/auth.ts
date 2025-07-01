@@ -6,9 +6,7 @@ import CredentialsProvider from "next-auth/providers/credentials"
 import GoogleProvider from "next-auth/providers/google"
 
 export const authOptions: NextAuthOptions = {
-  // This is a temporary fix for prisma client.
-  // @see https://github.com/prisma/prisma/issues/16117
-  adapter: PrismaAdapter(prisma as any),
+  adapter: PrismaAdapter(prisma),
   pages: {
     signIn: "/login",
   },
