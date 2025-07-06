@@ -1,0 +1,13 @@
+name: Supabase Cron
+
+on:
+  schedule:
+    - cron: "0 8 * * *" # every day at 8:00 AM UTC
+
+jobs:
+  ping-api:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Call Intellicore API route
+        run: curl -s -o /dev/null -w "%{http_code}" "${{ secrets.SUPABASE_API_URL }}"

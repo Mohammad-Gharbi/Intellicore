@@ -135,3 +135,8 @@ model Reaction {
   post      Post     @relation(fields: [postId], references: [id])
   createdAt DateTime @default(now())
 }
+
+model Supabase {
+  id        String   @id @default(cuid())
+  checkedAt DateTime @default(now())
+}
