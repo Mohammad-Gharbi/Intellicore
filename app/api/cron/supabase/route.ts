@@ -1,9 +1,12 @@
 import { prisma } from "@/lib/prisma"
+import { NextResponse } from "next/server"
 
 export async function POST() {
-  return await prisma.supabase.create({
+  const result = await prisma.supabase.create({
     data: {
       checkedAt: new Date(),
     },
   })
+
+  return NextResponse.json(result)
 }
