@@ -25,13 +25,23 @@ export async function POST(req: Request) {
         email: user.email,
       },
     })
-  } catch (error: any) {
-    return new NextResponse(
-      JSON.stringify({
-        status: "error",
-        message: error.message,
-      }),
-      { status: 500 }
-    )
+  } catch (error: unknown) {
+    if (error instanceof Error) {
+      return new NextResponse(
+        JSON.stringify({
+          status: "error",
+          message: error.message,
+        }),
+        { status: 500 }
+      )
+    } else {
+      return new NextResponse(
+        JSON.stringify({
+          status: "error",
+          message: "unknown error",
+        }),
+        { status: 500 }
+      )
+    }
   }
 }
