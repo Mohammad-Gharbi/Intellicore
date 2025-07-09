@@ -14,7 +14,7 @@ export const RegisterForm = () => {
     email: "",
     password: "",
   })
-  const [error, setError] = useState("")
+  const [error, setError] = useState<string>()
 
   const searchParams = useSearchParams()
   const callbackUrl = searchParams?.get("callbackUrl") || "/dashboard"
@@ -39,9 +39,11 @@ export const RegisterForm = () => {
       }
 
       signIn(undefined, { callbackUrl: "/" })
-    } catch (error: any) {
+    } catch (error: unknown) {
       setLoading(false)
-      setError(error)
+      if (error instanceof Error) {
+        setError(error.message)
+      }
     }
 
     setFormValues({ name: "", email: "", password: "" })

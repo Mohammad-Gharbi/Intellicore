@@ -15,7 +15,7 @@ export const LoginForm = () => {
     email: "",
     password: "",
   })
-  const [error, setError] = useState("")
+  const [error, setError] = useState<string>()
 
   const searchParams = useSearchParams()
   const callbackUrl = searchParams?.get("callbackUrl") || "/dashboard"
@@ -40,9 +40,11 @@ export const LoginForm = () => {
       } else {
         setError("invalid email or password")
       }
-    } catch (error: any) {
+    } catch (error: unknown) {
       setLoading(false)
-      setError(error)
+      if (error instanceof Error) {
+        setError(error.message)
+      }
     }
 
     setFormValues({ email: "", password: "" })
