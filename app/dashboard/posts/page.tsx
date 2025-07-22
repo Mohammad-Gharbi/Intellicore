@@ -5,21 +5,26 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 
-interface Post {
-  id: string
-  title: string
-  content: string
-  createdAt: string
-  authorId?: string
-}
+import type { Post } from "@/types/post"
 
 export default function PostsPage() {
   const [posts, setPosts] = useState<Post[]>([])
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch("/api/posts")
-      .then((res) => res.json())
-      .then(setPosts)
+    const fetchPosts = async () => {
+      try {
+        const res = await fetch("/api/posts")
+        const data = await res.json()
+        setPosts(data)
+      } catch (error) {
+        console.error(error)
+      } finally {
+        setLoading(false)
+      }
+    }
+
+    fetchPosts()
   }, [])
 
   return (
@@ -31,18 +36,19 @@ export default function PostsPage() {
         </Button>
       </div>
 
-      {posts.length === 0 ? (
+      {!loading && posts.length === 0 ? (
         <p className="text-muted-foreground">No posts found.</p>
       ) : (
         posts.map((post) => (
           <Card key={post.id}>
-            <Link href={`/posts/${post.id}`}>
+            <Link href={`posts/${post.id}`}>
               <CardHeader>
                 <CardTitle className="text-lg">{post.title}</CardTitle>
               </CardHeader>
               <CardContent>
                 <p className="text-sm text-muted-foreground">
-                  {"Author"} · {new Date(post.createdAt).toLocaleDateString()}
+                  {post.author.name} ·{" "}
+                  {new Date(post.createdAt).toLocaleDateString()}
                 </p>
               </CardContent>
             </Link>
