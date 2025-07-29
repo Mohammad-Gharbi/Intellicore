@@ -14,9 +14,9 @@ export default function PostsPage() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        const res = await fetch("/api/posts")
-        const data = await res.json()
-        setPosts(data)
+        fetch("/api/posts")
+          .then((res) => res.json())
+          .then((data: Post[]) => setPosts(data))
       } catch (error) {
         console.error(error)
       } finally {
@@ -36,8 +36,8 @@ export default function PostsPage() {
         </Button>
       </div>
 
-      {!loading && posts.length === 0 ? (
-        <p className="text-muted-foreground">No posts found.</p>
+      {loading ? (
+        <p className="text-muted-foreground">Loading...</p>
       ) : (
         posts.map((post) => (
           <Card key={post.id}>

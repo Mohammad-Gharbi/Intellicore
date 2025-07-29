@@ -1,6 +1,7 @@
 "use client"
 
 import MarkdownRenderer from "@/components/MarkdownRenderer"
+import TagSelector from "@/components/TagSelector"
 import type { Post } from "@/types/post"
 import { useParams } from "next/navigation"
 import { useEffect, useState } from "react"
@@ -8,6 +9,7 @@ import { useEffect, useState } from "react"
 export default function PostPage() {
   const [post, setPost] = useState<Post>()
   const [loading, setLoading] = useState(true)
+  const [tags, setTags] = useState<string[]>([])
 
   const params = useParams()
   const id = params?.id as string
@@ -44,16 +46,13 @@ export default function PostPage() {
             <MarkdownRenderer content={post.content} />
           </div>
 
-          {/* <div className="mt-4 flex gap-2">
-            {post.tags.map((tag) => (
-              <span
-                key={tag.id}
-                className="text-sm text-primary-foreground bg-primary/10 px-2 py-1 rounded"
-              >
-                #{tag.name}
-              </span>
-            ))}
-          </div> */}
+          <div className="w-32">
+            <TagSelector
+              allTags={["React", "Next.js", "TypeScript"]}
+              selected={tags}
+              onChange={setTags}
+            />
+          </div>
         </div>
       </div>
     )
