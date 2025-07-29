@@ -3,13 +3,16 @@ import { Calendar, Home, Inbox, Settings } from "lucide-react"
 import {
   Sidebar,
   SidebarContent,
+  SidebarFooter,
   SidebarGroup,
   SidebarGroupContent,
   SidebarGroupLabel,
+  SidebarHeader,
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { Button } from "./ui/button"
 
 // Menu items.
 const items = [
@@ -28,35 +31,38 @@ const items = [
     url: "#",
     icon: Calendar,
   },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
 ]
 
 export function AppSidebar() {
   return (
-    <Sidebar>
+    <Sidebar variant="floating">
+      <SidebarHeader>
+        <Button className="cursor-pointer" variant="outline">
+          Mohammed Gharbi
+        </Button>
+      </SidebarHeader>
       <SidebarContent>
-        <SidebarGroup>
-          <SidebarGroupLabel>Application</SidebarGroupLabel>
-          <SidebarGroupContent>
-            <SidebarMenu>
-              {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
-                  <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
-                    </a>
-                  </SidebarMenuButton>
-                </SidebarMenuItem>
-              ))}
-            </SidebarMenu>
-          </SidebarGroupContent>
-        </SidebarGroup>
+        <SidebarMenu>
+          {items.map((item) => (
+            <SidebarMenuItem key={item.title}>
+              <SidebarMenuButton asChild>
+                <a href={item.url}>
+                  <item.icon />
+                  <span>{item.title}</span>
+                </a>
+              </SidebarMenuButton>
+            </SidebarMenuItem>
+          ))}
+        </SidebarMenu>
       </SidebarContent>
+      <SidebarFooter>
+        <SidebarMenuButton asChild>
+          <a href="">
+            <Settings />
+            <span>Settings</span>
+          </a>
+        </SidebarMenuButton>
+      </SidebarFooter>
     </Sidebar>
   )
 }
