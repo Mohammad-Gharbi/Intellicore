@@ -14,9 +14,16 @@ export default function PostsPage() {
   useEffect(() => {
     const fetchPosts = async () => {
       try {
-        fetch("/api/posts")
-          .then((res) => res.json())
-          .then((data: Post[]) => setPosts(data))
+        const res = await fetch("/api/posts")
+        if (!res.ok) throw new Error("Failed to fetch tags")
+
+        const data = await res.json()
+
+        if (Array.isArray(data)) {
+          setPosts(data)
+        } else {
+          setPosts([])
+        }
       } catch (error) {
         console.error(error)
       } finally {

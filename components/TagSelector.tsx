@@ -23,13 +23,12 @@ type TagSelectorProps = {
 }
 
 export default function TagSelector({
-  allTags: initialTags,
+  allTags,
   selected,
   onChange,
 }: TagSelectorProps) {
   const [open, setOpen] = useState(false)
   const [inputValue, setInputValue] = useState("")
-  const [allTags, setAllTags] = useState(initialTags)
 
   const handleSelect = (tag: string) => {
     if (!selected.includes(tag)) {
@@ -54,16 +53,9 @@ export default function TagSelector({
   }
 
   const handleCreate = (tag: string) => {
-    setAllTags([...allTags, tag])
     handleSelect(tag)
     addNewTag(tag)
   }
-
-  const filteredTags = allTags.filter(
-    (tag) =>
-      tag.toLowerCase().includes(inputValue.toLowerCase()) &&
-      !selected.includes(tag)
-  )
 
   return (
     <div className="space-y-2 my-4">
@@ -101,7 +93,7 @@ export default function TagSelector({
               onValueChange={setInputValue}
             />
             <CommandList>
-              {filteredTags.map((tag) => (
+              {allTags.map((tag) => (
                 <CommandItem key={tag} onSelect={() => handleSelect(tag)}>
                   {tag}
                 </CommandItem>

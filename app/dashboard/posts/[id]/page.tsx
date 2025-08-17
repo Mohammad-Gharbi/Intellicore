@@ -3,32 +3,77 @@
 import MarkdownRenderer from "@/components/MarkdownRenderer"
 import TagSelector from "@/components/TagSelector"
 import type { Post } from "@/types/post"
+import type { PostTag } from "@/types/post-tag"
 import { useParams } from "next/navigation"
-import { useEffect, useState } from "react"
+import { useEffect, useRef, useState } from "react"
 
 export default function PostPage() {
   const [post, setPost] = useState<Post>()
   const [loading, setLoading] = useState(true)
   const [tags, setTags] = useState<string[]>([])
+  const [allTags, setAllTags] = useState<string[]>([])
 
   const params = useParams()
   const id = params?.id as string
 
-  useEffect(() => {
-    const fetchPost = async () => {
-      try {
-        const res = await fetch(`/api/posts/${id}`)
-        const data = await res.json()
-        setPost(data)
-      } catch (error) {
-        console.error(error)
-      } finally {
-        setLoading(false)
+  const isFirstRender = useRef(true)
+
+  const fetchPost = async (id: string) => {
+    try {
+      const res = await fetch(`/api/posts/${id}`)
+      const data = await res.json()
+      setPost(data)
+      setTags(data.tags.map((postTag: PostTag) => postTag.tag.name))
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const fetchTags = async () => {
+    try {
+      const res = await fetch("/api/tags")
+      if (!res.ok) throw new Error("Failed to fetch tags")
+      const data = await res.json()
+
+      if (Array.isArray(data)) {
+        setAllTags(data.map((tag) => tag.name))
+      } else {
+        setAllTags([])
       }
+    } catch (error) {
+      console.error(error)
+    } finally {
+      setLoading(false)
+    }
+  }
+
+  const updateTags = async (postId: string, newTags: string[]) => {
+    const res = await fetch(`/api/posts/${postId}`, {
+      method: "PUT",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ tagNames: newTags }),
+    })
+    return res.json()
+  }
+
+  useEffect(() => {
+    fetchPost(id)
+  }, [id])
+
+  useEffect(() => {
+    fetchTags()
+  }, [id, tags])
+
+  useEffect(() => {
+    if (isFirstRender.current) {
+      isFirstRender.current = false
+      return
     }
 
-    fetchPost()
-  }, [id])
+    updateTags(id, tags)
+  }, [id, tags])
 
   if (loading) return <div>Loading...</div>
 
@@ -47,11 +92,7 @@ export default function PostPage() {
           </div>
 
           <div className="w-32">
-            <TagSelector
-              allTags={["React", "Next.js", "TypeScript"]}
-              selected={tags}
-              onChange={setTags}
-            />
+            <TagSelector allTags={allTags} selected={tags} onChange={setTags} />
           </div>
         </div>
       </div>
