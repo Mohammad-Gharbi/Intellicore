@@ -2,6 +2,7 @@
 
 import MarkdownRenderer from "@/components/MarkdownRenderer"
 import TagSelector from "@/components/TagSelector"
+import { Skeleton } from "@/components/ui/skeleton"
 import type { Post } from "@/types/post"
 import type { PostTag } from "@/types/post-tag"
 import { useParams } from "next/navigation"
@@ -75,7 +76,14 @@ export default function PostPage() {
     updateTags(id, tags)
   }, [id, tags])
 
-  if (loading) return <div>Loading...</div>
+  if (loading)
+    return (
+      <div className="p-6 space-y-4">
+        <Skeleton className="h-14 w-full" />
+        <Skeleton className="h-14 w-full" />
+        <Skeleton className="h-14 w-full" />
+      </div>
+    )
 
   if (post)
     return (

@@ -1,3 +1,5 @@
+import type { Post } from "@/types/post"
+
 export interface PostTag {
   postId: string
   tagId: string
@@ -5,4 +7,5 @@ export interface PostTag {
     id: string
     name: string
   }
+  post: Post[]
 }

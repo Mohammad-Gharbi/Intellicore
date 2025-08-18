@@ -25,7 +25,7 @@ const items = [
   },
   {
     title: "Tags",
-    url: "#",
+    url: "/dashboard/tags",
     icon: Calendar,
   },
 ]

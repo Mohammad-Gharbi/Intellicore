@@ -1,11 +1,12 @@
 "use client"
 
 import Link from "next/link"
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { useEffect, useState } from "react"
 import { Button } from "@/components/ui/button"
 
 import type { Post } from "@/types/post"
+import { Skeleton } from "@/components/ui/skeleton"
+import { PostCard } from "@/components/PostCard"
 
 export default function PostsPage() {
   const [posts, setPosts] = useState<Post[]>([])
@@ -44,23 +45,13 @@ export default function PostsPage() {
       </div>
 
       {loading ? (
-        <p className="text-muted-foreground">Loading...</p>
+        <div className="space-y-3">
+          <Skeleton className="h-14 w-full" />
+          <Skeleton className="h-14 w-full" />
+          <Skeleton className="h-14 w-full" />
+        </div>
       ) : (
-        posts.map((post) => (
-          <Card key={post.id}>
-            <Link href={`posts/${post.id}`}>
-              <CardHeader>
-                <CardTitle className="text-lg">{post.title}</CardTitle>
-              </CardHeader>
-              <CardContent>
-                <p className="text-sm text-muted-foreground">
-                  {post.author.name} ·{" "}
-                  {new Date(post.createdAt).toLocaleDateString()}
-                </p>
-              </CardContent>
-            </Link>
-          </Card>
-        ))
+        posts.map((post: Post) => <PostCard key={post.id} post={post} />)
       )}
     </div>
   )
