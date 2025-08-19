@@ -1,3 +1,5 @@
+"use client"
+
 import { Calendar, Home, Inbox, Settings } from "lucide-react"
 
 import {
@@ -10,12 +12,14 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { Button } from "./ui/button"
+import { usePathname } from "next/navigation"
+import { cn } from "@/lib/utils"
 
 // Menu items.
 const items = [
   {
     title: "Home",
-    url: "/dashboard",
+    url: "/dashboard/home",
     icon: Home,
   },
   {
@@ -31,6 +35,8 @@ const items = [
 ]
 
 export function AppSidebar() {
+  const pathname = usePathname()
+
   return (
     <Sidebar variant="floating">
       <SidebarHeader>
@@ -40,16 +46,28 @@ export function AppSidebar() {
       </SidebarHeader>
       <SidebarContent>
         <SidebarMenu>
-          {items.map((item) => (
-            <SidebarMenuItem key={item.title}>
-              <SidebarMenuButton asChild>
-                <a href={item.url}>
-                  <item.icon />
-                  <span>{item.title}</span>
-                </a>
-              </SidebarMenuButton>
-            </SidebarMenuItem>
-          ))}
+          {items.map((item) => {
+            const isActive = pathname.startsWith(item.url)
+
+            return (
+              <SidebarMenuItem key={item.title}>
+                <SidebarMenuButton
+                  className={cn(
+                    "flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-medium transition-colors",
+                    isActive
+                      ? "bg-primary/80 hover:bg-primary/70 text-accent-foreground"
+                      : "text-muted-foreground hover:bg-accent/80 hover:text-accent-foreground"
+                  )}
+                  asChild
+                >
+                  <a href={item.url}>
+                    <item.icon />
+                    <span>{item.title}</span>
+                  </a>
+                </SidebarMenuButton>
+              </SidebarMenuItem>
+            )
+          })}
         </SidebarMenu>
       </SidebarContent>
       <SidebarFooter>
