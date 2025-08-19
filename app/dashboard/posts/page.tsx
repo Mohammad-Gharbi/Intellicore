@@ -35,6 +35,10 @@ export default function PostsPage() {
     fetchPosts()
   }, [])
 
+  const handlePostDeleted = (id: string) => {
+    setPosts((prev) => prev.filter((p) => p.id !== id))
+  }
+
   return (
     <div className="p-6 space-y-4">
       <div className="flex flex-row justify-between">
@@ -51,7 +55,13 @@ export default function PostsPage() {
           <Skeleton className="h-14 w-full" />
         </div>
       ) : (
-        posts.map((post: Post) => <PostCard key={post.id} post={post} />)
+        posts.map((post: Post) => (
+          <PostCard
+            key={post.id}
+            post={post}
+            handlePostDeleted={handlePostDeleted}
+          />
+        ))
       )}
     </div>
   )
