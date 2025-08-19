@@ -40,3 +40,21 @@ export async function GET(
     }
   }
 }
+
+export async function DELETE(
+  req: Request,
+  { params }: { params: { id: string } }
+) {
+  try {
+    const tagId = params.id
+
+    await prisma.postTag.deleteMany({ where: { tagId } })
+
+    await prisma.tag.delete({ where: { id: tagId } })
+
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    console.error(error)
+    return NextResponse.json({ error: "Failed to delete tag" }, { status: 500 })
+  }
+}

@@ -7,6 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 
 import type { Tag } from "@/types/tag"
+import { TagDropdown } from "@/components/TagDropdown"
 
 export default function TagsPage() {
   const [tags, setTags] = useState<Tag[]>([])
@@ -22,6 +23,10 @@ export default function TagsPage() {
     } finally {
       setLoading(false)
     }
+  }
+
+  const handleTagDeleted = (id: string) => {
+    setTags((prev) => prev.filter((t) => t.id !== id))
   }
 
   useEffect(() => {
@@ -53,11 +58,12 @@ export default function TagsPage() {
                       : `${tag._count.PostTag} posts`}
                   </Badge>
                 </CardHeader>
-                <CardContent>
+                <CardContent className="flex flex-row justify-between items-center">
                   <p className="text-sm text-muted-foreground">
                     Click to explore posts with{" "}
                     <span className="font-medium">{tag.name}</span>
                   </p>
+                  <TagDropdown tag={tag} onDeleted={handleTagDeleted} />
                 </CardContent>
               </Card>
             </Link>
