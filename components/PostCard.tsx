@@ -4,7 +4,7 @@ import { Post } from "@/types/post"
 
 export function PostCard({ post }: { post: Post }) {
   return (
-    <Card>
+    <Card className="hover:shadow-md hover:bg-muted transition-colors cursor-pointer">
       <Link href={`/dashboard/posts/${post.id}`}>
         <CardHeader>
           <CardTitle className="text-lg">{post.title}</CardTitle>
