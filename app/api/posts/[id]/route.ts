@@ -3,9 +3,9 @@ import { NextResponse } from "next/server"
 
 export async function GET(
   req: Request,
-  context: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
-  const { id } = await context.params
+  const { id } = params
 
   try {
     const post = await prisma.post.findUnique({
@@ -40,40 +40,38 @@ export async function GET(
 
 export async function PUT(
   req: Request,
-  context: { params: Promise<{ id: string }> }
+  { params }: { params: { id: string } }
 ) {
-  const { id } = await context.params
-  const { tagNames } = await req.json()
+  try {
+    const { id } = params
+    const { tagNames } = await req.json()
 
-  const tags = await Promise.all(
-    tagNames.map((name: string) =>
-      prisma.tag.upsert({
-        where: { name },
-        update: {},
-        create: { name },
-      })
+    const tags = await Promise.all(
+      tagNames.map((name: string) =>
+        prisma.tag.upsert({
+          where: { name },
+          update: {},
+          create: { name },
+        })
+      )
     )
-  )
 
-  await prisma.postTag.deleteMany({
-    where: { postId: id },
-  })
+    await prisma.postTag.deleteMany({ where: { postId: id } })
+    await prisma.postTag.createMany({
+      data: tags.map((tag) => ({ postId: id, tagId: tag.id })),
+    })
 
-  await prisma.postTag.createMany({
-    data: tags.map((tag) => ({
-      postId: id,
-      tagId: tag.id,
-    })),
-  })
+    const updatedPost = await prisma.post.findUnique({
+      where: { id },
+      include: { tags: { include: { tag: true } } },
+    })
 
-  const updatedPost = await prisma.post.findUnique({
-    where: { id: id },
-    include: {
-      tags: {
-        include: { tag: true },
-      },
-    },
-  })
-
-  return NextResponse.json(updatedPost)
+    return NextResponse.json(updatedPost)
+  } catch (error) {
+    console.error(error)
+    return NextResponse.json(
+      { error: "Failed to update tags" },
+      { status: 500 }
+    )
+  }
 }
