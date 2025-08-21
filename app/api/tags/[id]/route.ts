@@ -43,10 +43,10 @@ export async function GET(
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const tagId = params.id
+    const { id: tagId } = await context.params
 
     await prisma.postTag.deleteMany({ where: { tagId } })
 

@@ -40,10 +40,10 @@ export async function GET(
 
 export async function PUT(
   req: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
   try {
-    const { id } = params
+    const { id } = await context.params
     const { tagNames } = await req.json()
 
     const tags = await Promise.all(
@@ -71,6 +71,27 @@ export async function PUT(
     console.error(error)
     return NextResponse.json(
       { error: "Failed to update tags" },
+      { status: 500 }
+    )
+  }
+}
+
+export async function DELETE(
+  req: Request,
+  context: { params: Promise<{ id: string }> }
+) {
+  try {
+    const { id: postId } = await context.params
+
+    await prisma.postTag.deleteMany({ where: { postId } })
+
+    await prisma.post.delete({ where: { id: postId } })
+
+    return NextResponse.json({ success: true })
+  } catch (error) {
+    console.error(error)
+    return NextResponse.json(
+      { error: "Failed to delete post" },
       { status: 500 }
     )
   }
