@@ -25,6 +25,8 @@ export default function PostPage() {
       const data = await res.json()
       setPost(data)
       setTags(data.tags.map((postTag: PostTag) => postTag.tag.name))
+
+      await fetch(`/api/posts/${id}/view`, { method: "POST" })
     } catch (error) {
       console.error(error)
     } finally {
