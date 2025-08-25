@@ -11,9 +11,9 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
-import { Button } from "./ui/button"
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
+import { Button } from "../ui/button"
 
 // Menu items.
 const items = [

@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button"
 
 import type { Post } from "@/types/post"
 import { Skeleton } from "@/components/ui/skeleton"
-import { PostCard } from "@/components/PostCard"
+import { PostCard } from "@/components/dashboard/posts/PostCard"
 
 export default function PostsPage() {
   const [posts, setPosts] = useState<Post[]>([])
@@ -42,7 +42,7 @@ export default function PostsPage() {
   return (
     <div className="p-6 space-y-4">
       <div className="flex flex-row justify-between">
-        <h1 className="text-3xl font-bold mb-4">All Posts</h1>
+        <h1 className="text-3xl font-bold mb-4">Posts</h1>
         <Button asChild>
           <Link href="posts/create">Create Post</Link>
         </Button>

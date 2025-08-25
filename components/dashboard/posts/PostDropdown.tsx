@@ -9,31 +9,31 @@ import {
 import { Button } from "@/components/ui/button"
 import { Trash2, MoreHorizontal } from "lucide-react"
 import { useTransition } from "react"
-import { Tag } from "@/types/tag"
+import { Post } from "@/types/post"
 
-export function TagDropdown({
-  tag,
+export function PostDropdown({
+  post,
   onDeleted,
 }: {
-  tag: Tag
+  post: Post
   onDeleted: (id: string) => void
 }) {
   const [isPending, startTransition] = useTransition()
 
-  const deleteTag = async (tagId: string) => {
-    const res = await fetch(`/api/tags/${tagId}`, {
+  const deletePost = async (postId: string) => {
+    const res = await fetch(`/api/posts/${postId}`, {
       method: "DELETE",
     })
 
-    if (!res.ok) throw new Error("Failed to delete tag")
+    if (!res.ok) throw new Error("Failed to delete post")
     return res.json()
   }
 
   const handleDelete = () => {
     startTransition(async () => {
       try {
-        await deleteTag(tag.id)
-        onDeleted(tag.id)
+        await deletePost(post.id)
+        onDeleted(post.id)
       } catch (err) {
         console.error(err)
       }
@@ -43,11 +43,7 @@ export function TagDropdown({
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
-        <Button
-          variant="outline"
-          size="sm"
-          onClick={(e) => e.stopPropagation()}
-        >
+        <Button variant="ghost" size="sm" onClick={(e) => e.stopPropagation()}>
           <MoreHorizontal className="h-4 w-4" />
         </Button>
       </DropdownMenuTrigger>
