@@ -1,6 +1,6 @@
 "use client"
 
-import MarkdownRenderer from "./MarkdownRenderer"
+import MarkdownRenderer from "@/components/MarkdownRenderer"
 
 interface PostPreviewProps {
   title: string

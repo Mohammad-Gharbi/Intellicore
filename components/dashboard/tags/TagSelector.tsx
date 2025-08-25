@@ -14,7 +14,7 @@ import {
 } from "@/components/ui/popover"
 import { Badge } from "@/components/ui/badge"
 import { X } from "lucide-react"
-import { Button } from "./ui/button"
+import { Button } from "../../ui/button"
 
 type TagSelectorProps = {
   allTags: string[]

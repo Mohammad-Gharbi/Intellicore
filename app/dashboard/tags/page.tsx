@@ -7,7 +7,7 @@ import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 
 import type { Tag } from "@/types/tag"
-import { TagDropdown } from "@/components/TagDropdown"
+import { TagDropdown } from "@/components/dashboard/tags/TagDropdown"
 
 export default function TagsPage() {
   const [tags, setTags] = useState<Tag[]>([])

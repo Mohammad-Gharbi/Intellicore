@@ -6,7 +6,7 @@ import { Badge } from "@/components/ui/badge"
 import { Skeleton } from "@/components/ui/skeleton"
 
 import type { Tag } from "@/types/tag"
-import { PostCard } from "@/components/PostCard"
+import { PostCard } from "@/components/dashboard/posts/PostCard"
 
 export default function TagPage() {
   const params = useParams<{ id: string }>()

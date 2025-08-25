@@ -1,7 +1,7 @@
 "use client"
 
 import MarkdownRenderer from "@/components/MarkdownRenderer"
-import TagSelector from "@/components/TagSelector"
+import TagSelector from "@/components/dashboard/tags/TagSelector"
 import { Skeleton } from "@/components/ui/skeleton"
 import type { Post } from "@/types/post"
 import type { PostTag } from "@/types/post-tag"

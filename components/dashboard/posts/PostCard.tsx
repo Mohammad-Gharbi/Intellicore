@@ -1,5 +1,5 @@
 import Link from "next/link"
-import { Card, CardContent, CardHeader, CardTitle } from "./ui/card"
+import { Card, CardContent, CardHeader, CardTitle } from "../../ui/card"
 import { Post } from "@/types/post"
 import { PostDropdown } from "./PostDropdown"
 
