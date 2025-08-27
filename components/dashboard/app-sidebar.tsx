@@ -14,6 +14,7 @@ import {
 import { usePathname } from "next/navigation"
 import { cn } from "@/lib/utils"
 import { Button } from "../ui/button"
+import Link from "next/link"
 
 // Menu items.
 const items = [
@@ -40,8 +41,8 @@ export function AppSidebar() {
   return (
     <Sidebar variant="floating">
       <SidebarHeader>
-        <Button className="cursor-pointer" variant="outline">
-          Mohammed Gharbi
+        <Button className="cursor-pointer" variant="outline" asChild>
+          <Link href="/profile"> Mohammed Gharbi</Link>
         </Button>
       </SidebarHeader>
       <SidebarContent>

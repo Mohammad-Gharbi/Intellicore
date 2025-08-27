@@ -7,7 +7,7 @@ import { Textarea } from "@/components/ui/textarea"
 import { Button } from "@/components/ui/button"
 import { Label } from "@/components/ui/label"
 import { toast } from "sonner"
-import { PostPreview } from "@/components/PostPreview"
+import { PostPreview } from "@/components/dashboard/posts/PostPreview"
 
 export default function NewPostPage() {
   const router = useRouter()
