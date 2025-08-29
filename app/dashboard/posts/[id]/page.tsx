@@ -3,16 +3,23 @@
 import MarkdownRenderer from "@/components/MarkdownRenderer"
 import TagSelector from "@/components/dashboard/tags/TagSelector"
 import { Skeleton } from "@/components/ui/skeleton"
-import type { Post } from "@/types/post"
-import type { PostTag } from "@/types/post-tag"
 import { useParams } from "next/navigation"
 import { useEffect, useRef, useState } from "react"
 
+import type { Post } from "@/types/post"
+import type { PostTag } from "@/types/post-tag"
+import type { Comment } from "@/types/comment"
+import CommentsSection from "@/components/dashboard/posts/Comment"
+
 export default function PostPage() {
   const [post, setPost] = useState<Post>()
+
   const [loading, setLoading] = useState(true)
+
   const [tags, setTags] = useState<string[]>([])
   const [allTags, setAllTags] = useState<string[]>([])
+
+  const [comments, setComments] = useState<Comment[]>([])
 
   const params = useParams()
   const id = params?.id as string
@@ -78,6 +85,25 @@ export default function PostPage() {
     updateTags(id, tags)
   }, [id, tags])
 
+  useEffect(() => {
+    fetch(`/api/posts/${id}/comments`)
+      .then((res) => res.json())
+      .then(setComments)
+  }, [id])
+
+  const addNewComment = async (newComment: string) => {
+    if (!newComment.trim()) return
+
+    const res = await fetch(`/api/posts/${id}/comments`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ content: newComment, authorId: post?.author.id }),
+    })
+
+    const created = await res.json()
+    setComments([created, ...comments])
+  }
+
   if (loading)
     return (
       <div className="p-6 space-y-4">
@@ -105,6 +131,12 @@ export default function PostPage() {
             <TagSelector allTags={allTags} selected={tags} onChange={setTags} />
           </div>
         </div>
+
+        <CommentsSection
+          author={post?.author.name}
+          comments={comments}
+          addNewComment={addNewComment}
+        />
       </div>
     )
 }
