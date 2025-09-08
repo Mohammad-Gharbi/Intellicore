@@ -17,8 +17,10 @@ export async function GET(
 
 export async function POST(
   req: Request,
-  { params }: { params: { id: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
+  const { id } = await context.params
+
   const { content, authorId } = await req.json()
 
   if (!content || !authorId) {
@@ -31,7 +33,7 @@ export async function POST(
   const newComment = await prisma.comment.create({
     data: {
       content,
-      postId: params.id,
+      postId: id,
       authorId,
     },
     include: { author: true },
