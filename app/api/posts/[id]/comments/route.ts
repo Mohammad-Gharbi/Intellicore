@@ -1,12 +1,11 @@
 import { prisma } from "@/lib/prisma"
 import { NextResponse } from "next/server"
 
-export async function GET(
-  req: Request,
-  { params }: { params: { id: string } }
-) {
+export async function GET(req: Request, context: { params: { id: string } }) {
+  const { id } = context.params
+
   const comments = await prisma.comment.findMany({
-    where: { postId: params.id },
+    where: { postId: id },
     include: { author: true },
     orderBy: { createdAt: "desc" },
   })
