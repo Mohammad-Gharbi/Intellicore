@@ -5,17 +5,21 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import { Textarea } from "@/components/ui/textarea"
 import { Card, CardContent } from "@/components/ui/card"
-import { MoreHorizontal } from "lucide-react"
 import { Comment } from "@/types/comment"
+import { CommentDropdown } from "./CommentDropdown"
 
 export default function CommentsSection({
+  postId,
   author,
   comments,
   addNewComment,
+  handleCommentDeleted,
 }: {
+  postId: string
   author: string | null
   comments: Comment[]
   addNewComment: (newComment: string) => Promise<void>
+  handleCommentDeleted: (id: string) => void
 }) {
   const [newComment, setNewComment] = useState("")
 
@@ -66,7 +70,11 @@ export default function CommentsSection({
                 <p className="text-sm mt-1">{comment.content}</p>
               </div>
               <Button variant="ghost" size="icon">
-                <MoreHorizontal className="w-4 h-4" />
+                <CommentDropdown
+                  postId={postId}
+                  comment={comment}
+                  onDeleted={handleCommentDeleted}
+                />
               </Button>
             </CardContent>
           </Card>

@@ -104,6 +104,10 @@ export default function PostPage() {
     setComments([created, ...comments])
   }
 
+  const handleCommentDeleted = (id: string) => {
+    setComments((prev) => prev.filter((c) => c.id !== id))
+  }
+
   if (loading)
     return (
       <div className="p-6 space-y-4">
@@ -133,9 +137,11 @@ export default function PostPage() {
         </div>
 
         <CommentsSection
+          postId={id}
           author={post?.author.name}
           comments={comments}
           addNewComment={addNewComment}
+          handleCommentDeleted={handleCommentDeleted}
         />
       </div>
     )
