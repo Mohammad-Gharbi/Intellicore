@@ -12,6 +12,7 @@ import {
   ResponsiveContainer,
 } from "recharts"
 import type { DashboardData } from "@/types/dashboardData"
+import { Skeleton } from "@/components/ui/skeleton"
 
 type PostViewsChartPoint = { date: string; views: number }
 type PostsChartPoint = { date: string; posts: number }
@@ -35,10 +36,19 @@ export default function DashboardPage() {
     fetchData()
   }, [])
 
-  if (loading) return <p>Loading dashboard...</p>
+  if (loading)
+    return (
+      <div className="p-6 space-y-6">
+        <h1 className="text-3xl font-bold">Dashboard</h1>
+        <div className="space-y-3">
+          <Skeleton className="h-14 w-full" />
+          <Skeleton className="h-14 w-full" />
+          <Skeleton className="h-14 w-full" />
+        </div>
+      </div>
+    )
   if (!data) return <p>Failed to load dashboard</p>
 
-  // transform chart data
   const postViewsChart: PostViewsChartPoint[] = data.viewsOverTime.map((v) => ({
     date: new Date(v.createdAt).toLocaleDateString(),
     views: v._count.id,

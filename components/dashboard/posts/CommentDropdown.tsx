@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Trash2, MoreHorizontal } from "lucide-react"
 import { useTransition } from "react"
 import { Comment } from "@/types/comment"
+import { toast } from "sonner"
 
 export function CommentDropdown({
   postId,
@@ -26,7 +27,11 @@ export function CommentDropdown({
     const res = await fetch(`/api/posts/${postId}/comments/${commentId}`, {
       method: "DELETE",
     })
-    if (!res.ok) throw new Error("Failed to delete comment")
+    if (res.ok) {
+      toast.success("Comment deleted")
+    } else {
+      toast.error("Failed to delete comment")
+    }
     return res.json()
   }
 

@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button"
 import { Trash2, MoreHorizontal } from "lucide-react"
 import { useTransition } from "react"
 import { Post } from "@/types/post"
+import { toast } from "sonner"
 
 export function PostDropdown({
   post,
@@ -25,7 +26,11 @@ export function PostDropdown({
       method: "DELETE",
     })
 
-    if (!res.ok) throw new Error("Failed to delete post")
+    if (res.ok) {
+      toast.success("Post deleted")
+    } else {
+      toast.error("Failed to delete post")
+    }
     return res.json()
   }
 

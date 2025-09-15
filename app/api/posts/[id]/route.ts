@@ -84,7 +84,9 @@ export async function DELETE(
   try {
     const { id: postId } = await context.params
 
+    await prisma.postView.deleteMany({ where: { postId } })
     await prisma.postTag.deleteMany({ where: { postId } })
+    await prisma.comment.deleteMany({ where: { postId } })
 
     await prisma.post.delete({ where: { id: postId } })
 

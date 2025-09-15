@@ -10,6 +10,7 @@ import type { Post } from "@/types/post"
 import type { PostTag } from "@/types/post-tag"
 import type { Comment } from "@/types/comment"
 import CommentsSection from "@/components/dashboard/posts/Comment"
+import { toast } from "sonner"
 
 export default function PostPage() {
   const [post, setPost] = useState<Post>()
@@ -99,6 +100,12 @@ export default function PostPage() {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ content: newComment, authorId: post?.author.id }),
     })
+
+    if (res.ok) {
+      toast.success("Comment created")
+    } else {
+      toast.error("Failed to create comment")
+    }
 
     const created = await res.json()
     setComments([created, ...comments])
