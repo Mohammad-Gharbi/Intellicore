@@ -18,10 +18,12 @@ async function deleteCommentAndReplies(id: string) {
 
 export async function DELETE(
   req: Request,
-  { params }: { params: { id: string; commentId: string } }
+  context: { params: Promise<{ id: string }> }
 ) {
+  const { id: commentId } = await context.params
+
   try {
-    await deleteCommentAndReplies(params.commentId)
+    await deleteCommentAndReplies(commentId)
 
     return NextResponse.json({ success: true })
   } catch (error) {
