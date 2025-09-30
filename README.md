@@ -7,6 +7,9 @@ A modern internal knowledge base for teams to share learnings, notes, and insigh
 > A modern knowledge base & team insights app — built with Next.js, Prisma, and Shadcn UI.
 
 ![Intellicore Screenshot](./public/screenshot-landing.png)
+![Intellicore Screenshot 1](./public/screenshot-1.png)
+![Intellicore Screenshot 2](./public/screenshot-2.png)
+![Intellicore Screenshot 3](./public/screenshot-3.png)
 
 ---
 
